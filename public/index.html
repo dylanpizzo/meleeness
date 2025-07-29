@@ -1,0 +1,629 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Ness Leaderboard</title>
+		<meta name="description" content="A leaderboard for Slippi nesses. Who will reach Grandmaster first?">
+		<meta property="og:url" content="https://nessrank.tiiny.site/">
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Ness Leaderboard">
+		<meta property="og:description" content="A leaderboard for Slippi nesses. Who will reach Grandmaster first?">
+		<meta property="og:image" content="https://nessrank.tiiny.site/nessrank.png">
+		<style>
+			@keyframes pulse {
+				0%, 100% {
+					background-color: var(--pulse1);
+				}
+				50% {
+					background-color: var(--pulse2);
+				}
+			}
+			body,
+			html {
+				margin: 0;
+			}
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+			.link {
+				color: rgb(96, 112, 192);
+			}
+			.link:hover {
+				text-decoration: underline;
+			}
+			.skeleton {
+				color: transparent;
+				--pulse1: rgb(50,60,70);
+				--pulse2: rgb(65,75,85);
+				animation: pulse 2s infinite;
+				border-radius: 0.25em;
+				user-select: none;
+			}
+			#main {
+				display: flex;
+				flex-direction: column;
+				gap: 1.5em;
+				padding: 2em;
+				background-color: rgb(10, 20, 30);
+				min-height: 100vh;
+				box-sizing: border-box;
+				color: white;
+				font-family: sans-serif;
+				padding-bottom: 40vh;
+				align-items: center;
+			}
+			.title {
+				font-size: 2em;
+				/* font-weight: bold; */
+				text-align: center;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.25em;
+			}
+			#content {
+				display: flex;
+				flex-direction: column;
+				gap: 1em;
+			}
+			.player-row {
+				display: flex;
+				align-items: center;
+				gap: 1.5em;
+				padding: 1em 1.5em;
+				border-radius: 1em;
+				box-sizing: border-box;
+				background-color: rgb(30, 40, 50);
+				transition: all 0.25s;
+			}
+			.player-row:hover {
+				background-color: rgb(40, 50, 60);
+			}
+			.player-row.bronze {
+				background-color: rgb(80, 50, 40);
+				border: 1px solid rgb(192, 112, 96);
+			}
+			.player-row.bronze:hover {
+				background-color: rgb(95, 60, 50);
+			}
+			.player-row.silver {
+				background-color: rgb(70, 70, 90);
+				border: 1.5px solid rgb(128, 128, 150);
+			}
+			.player-row.silver:hover {
+				background-color: rgb(85, 85, 100);
+			}
+			.player-row.gold {
+				background-color: rgb(120, 100, 30);
+				border: 2px solid rgb(255, 192, 60);
+			}
+			.player-row.gold:hover {
+				background-color: rgb(140, 115, 20);
+			}
+			.player-row.no2 {
+				background-color: rgb(40, 50, 80);
+				border: 1.5px solid rgb(96, 112, 192);
+			}
+			.player-row.no2:hover {
+				background-color: rgb(50, 60, 95);
+			}
+			.player-row.no3 {
+				background-color: rgb(40, 50, 70);
+				border: 1px solid rgb(72, 96, 128);
+			}
+			.player-row.no3:hover {
+				background-color: rgb(50, 60, 80);
+			}
+			.player-row.no1 {
+				--magenta: 227;
+				background-color: hsl(var(--magenta), 50%, 33%);
+				border: 2px solid hsl(var(--magenta), 75%, 58%);
+			}
+			.player-row.no1:hover {
+				background-color: hsl(var(--magenta), 48%, 40%);
+			}
+			.numrank-container {
+				width: 3em;
+				text-align: center;
+				flex-shrink: 0;
+			}
+			.numrank {
+				font-size: 1.5em;
+			}
+			.rating-container {
+				width: 3.5em;
+				display: flex;
+				flex-direction: column;
+				gap: 0.375em;
+				align-items: center;
+				justify-content: center;
+				flex-shrink: 0;
+			}
+			.rating-image img {
+				width: 100%;
+			}
+			.elo {
+				opacity: 0.8;
+			}
+			.name-container {
+				display: flex;
+				flex-direction: column;
+				gap: 0.25em;
+				flex-grow: 1;
+			}
+			.player-tag {
+				font-size: 1.5em;
+				display: flex;
+				gap: 0.5em;
+			}
+			.slippi-player {
+				opacity: 0.65;
+				display: flex;
+				gap: 0.5em;
+				align-items: center;
+			}
+			.spacer {
+				flex-grow: 1;
+			}
+			.right {
+				flex-shrink: 0;
+				display: flex;
+				flex-direction: column;
+				gap: 0.5em;
+				align-items: flex-end;
+			}
+			.win-loss {
+				font-family: "Rubik", sans-serif;
+				font-weight: bold;
+				font-size: 1.15em;
+			}
+			.wins {
+				color: rgb(46, 204, 64);
+			}
+			.losses {
+				color: rgb(255, 77, 0);
+			}
+			.nessicon {
+				width: 1em;
+				height: 1em;
+			}
+			.nessiness {
+				font-weight: normal;
+				font-size: 0.8em;
+				padding: 0.25em;
+				border-radius: 0.25em;
+				background-color: rgba(10, 70, 150, 0.5);
+				color: rgba(255, 255, 255, 0.75);
+				display: inline-flex;
+				align-items: center;
+				gap: 0.45em;
+			}
+			.nessiness-good {
+				background-color: rgba(10, 80, 10, 0.5);
+			}
+			.nessiness-okay {
+				background-color: rgba(120, 80, 10, 0.5);
+			}
+			.nessiness-null {
+				background-color: rgba(120, 120, 120, 0.5);
+			}
+			.nessiness-bad {
+				background-color: rgba(120, 10, 10, 0.5);
+			}
+			.crown {
+				height: 1.5em;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main">
+			<div class="title"><img class="nessicon" src="https://slippi.gg/images/characters/stock-icon-11-0.png"></img> Ness Leaderboard</div>
+			<div id="content"></div>
+			<div>
+				Join the <a class="link" href="https://discord.gg/011MSaTVv85tRjQWO">Nesscord</a> for more Ness!
+			</div>
+		</div>
+		<script>
+			let nesses = [
+				{
+					tag: "DJC-Bass",
+					code: "CBAS#264",
+				},
+				{
+					tag: "Joe(y) Bats",
+					code: "JOEY#149",
+				},
+				{
+					tag: "Hungrybox",
+					code: "ISATIS#0",
+				},
+				{
+					tag: "Peej",
+					code: "PEEJ#785",
+				},
+				{
+					tag: "Borat",
+					code: "BORA#645",
+				},
+				{
+					tag: "Murdock",
+					code: "MURD#799",
+				},
+				{
+					tag: "P0LR8",
+					code: "PLR#539",
+				},
+				{
+					tag: "PKOK",
+					code: "PKOK#209",
+				},
+				{
+					tag: "TheTheDucc",
+					code: "DUCC#105",
+				},
+				{
+					tag: "Kumatora",
+					code: "HRMK#768",
+				},
+				{
+					tag: "MP3",
+					code: "MP#3",
+				},
+				{
+					tag: "DJCFair",
+					code: "DJCF#224",
+				},
+				{
+					tag: "Boon Operator",
+					code: "BOON#669",
+				},
+				{
+					tag: "Ness",
+					code: "NESS#114",
+				},
+				{
+					tag: "Dsyc",
+					code: "AVA#0",
+				},
+				{
+					tag: "Ambrose",
+					code: "AMB#645",
+				},
+				{
+					tag: "frog_wiz",
+					code: "FROG#465",
+				},
+				{
+					tag: "Zion",
+					code: "SILL#107",
+				},
+				{
+					tag: "roguehippo",
+					code: "NESS#426",
+				},
+				{
+					tag: "thomas",
+					code: "THOM#995",
+				},
+				{
+					tag: "Plup",
+					code: "THET#232",
+				},
+				{
+					tag: "Salt",
+					code: "OBAM#557",
+				},
+				{
+					tag: "mister_person",
+					code: "NSTR#907",
+				},
+				{
+					tag: "Nukkles",
+					code: "KHAT#308",
+				},
+				{
+					tag: "Zain",
+					code: "NESS#762",
+				},
+				{
+					tag: "gabee407",
+					code: "FARF#744",
+				},
+			];
+
+			// ---
+
+			const crown = `
+				<span class="crown">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 64 64"
+						width="48"
+						height="48"
+						fill="white"
+					>
+						<path d="M 32 16 L 40 36 L 56 24 L 48 52 L 16 52 L 8 24 L 24 36 Z" />
+					</svg>
+				</span>
+			`
+			const rankNames = {
+				none: "None",
+				pending: "Pending",
+				bronze1: "Bronze 1",
+				bronze2: "Bronze 2",
+				bronze3: "Bronze 3",
+				silver1: "Silver 1",
+				silver2: "Silver 2",
+				silver3: "Silver 3",
+				gold1: "Gold 1",
+				gold2: "Gold 2",
+				gold3: "Gold 3",
+				platinum1: "Platinum 1",
+				platinum2: "Platinum 2",
+				platinum3: "Platinum 3",
+				diamond1: "Diamond 1",
+				diamond2: "Diamond 2",
+				diamond3: "Diamond 3",
+				master1: "Master 1",
+				master2: "Master 2",
+				master3: "Master 3",
+				grandmaster: "Grandmaster",
+			};
+			const rankImages = {
+				none: "https://slippi.gg/static/media/rank_Unranked1.ac2623299b250689293cd4a5e68fcc5b.svg",
+				pending:
+					"https://slippi.gg/static/media/rank_Unranked3.0f639e8b73090a7ba4a50f7bcc272f57.svg",
+				bronze1: "",
+				bronze2: "",
+				bronze3:
+					"https://slippi.gg/static/media/rank_Bronze_III.b44c3a06f14234dec6f67e9b28088a6f.svg",
+				silver1:
+					"https://slippi.gg/static/media/rank_Silver_I.b8069dd847a639127f6d3ff5363623f7.svg",
+				silver2:
+					"https://slippi.gg/static/media/rank_Silver_II.7a97ee32770c36e78d9d7e9279c7ce38.svg",
+				silver3:
+					"https://slippi.gg/static/media/rank_Silver_III.93588af0e9a6bc9406209d5ef3cc9dc7.svg",
+				gold1: "https://slippi.gg/static/media/rank_Gold_I.523b488f06ff22aaa013e94b6178f157.svg",
+				gold2: "https://slippi.gg/static/media/rank_Gold_II.951fc625063425ed048c864988e8d7b7.svg",
+				gold3: "https://slippi.gg/static/media/rank_Gold_III.38643ad9dbef534920fc2361fd736d7a.svg",
+				platinum1:
+					"https://slippi.gg/static/media/rank_Platinum_I.7a22c1a7c7640af6b6bf2f7b5b439fc6.svg",
+				platinum2:
+					"https://slippi.gg/static/media/rank_Platinum_II.ec1c571c896ed47ef2b14d8e2dd79fef.svg",
+				platinum3:
+					"https://slippi.gg/static/media/rank_Platinum_III.cd9d7a413a1de2182caaae563b4e5023.svg",
+				diamond1:
+					"https://slippi.gg/static/media/rank_Diamond_I.bcc6237a1e6be861f22f330bbff96964.svg",
+				diamond2:
+					"https://slippi.gg/static/media/rank_Diamond_II.2f26cd8248bcf6c34ea1efe7f835b123.svg",
+				diamond3:
+					"https://slippi.gg/static/media/rank_Diamond_III.ae3a5720a6ed48594efef54249095001.svg",
+				master1:
+					"https://slippi.gg/static/media/rank_Master_I.0ce2459fedf9e33ebee0cb3520a17e2f.svg",
+				master2:
+					"https://slippi.gg/static/media/rank_Master_II.c0b5472d49d391d2063d8e2a19c9ea17.svg",
+				master3:
+					"https://slippi.gg/static/media/rank_Master_III.5075fd077bf77bfa6c59985252e0cb04.svg",
+				grandmaster:
+					"https://slippi.gg/static/media/rank_Grand_Master.0f3bc5674e8ec76f17514f197242c4fa.svg",
+			};
+			const getRankBucket = (ness) => {
+				const { elo, dailyGlobalPlacement, dailyRegionalPlacement } =
+					ness;
+				let bucket = "bronze1";
+				if (elo >= 766) {
+					bucket = "bronze2";
+				}
+				if (elo >= 914) {
+					bucket = "bronze3";
+				}
+				if (elo >= 1055) {
+					bucket = "silver1";
+				}
+				if (elo >= 1189) {
+					bucket = "silver2";
+				}
+				if (elo >= 1316) {
+					bucket = "silver3";
+				}
+				if (elo >= 1436) {
+					bucket = "gold1";
+				}
+				if (elo >= 1549) {
+					bucket = "gold2";
+				}
+				if (elo >= 1654) {
+					bucket = "gold3";
+				}
+				if (elo >= 1752) {
+					bucket = "platinum1";
+				}
+				if (elo >= 1843) {
+					bucket = "platinum2";
+				}
+				if (elo >= 1928) {
+					bucket = "platinum3";
+				}
+				if (elo >= 2004) {
+					bucket = "diamond1";
+				}
+				if (elo >= 2074) {
+					bucket = "diamond2";
+				}
+				if (elo >= 2137) {
+					bucket = "diamond3";
+				}
+				if (elo >= 2192) {
+					bucket = "master1";
+				}
+				if (elo >= 2275) {
+					bucket = "master2";
+				}
+				if (elo >= 2350) {
+					bucket = "master3";
+				}
+				if (
+					(elo >= 2192 &&
+						dailyGlobalPlacement &&
+						dailyGlobalPlacement <= 300) ||
+					(dailyRegionalPlacement && dailyRegionalPlacement <= 50)
+				) {
+					bucket = "grandmaster";
+				}
+				if (ness.totalSets < 5) {
+					bucket = "pending";
+				}
+				if (ness.totalSets < 1) {
+					bucket = "none";
+				}
+				return bucket;
+			};
+			const getUserData = async (code) => {
+				const body = {
+					operationName: "AccountManagementPageQuery",
+					variables: { cc: code, uid: code },
+					query: "fragment profileFields on NetplayProfile {\n  id\n  ratingOrdinal\n  ratingUpdateCount\n  wins\n  losses\n  dailyGlobalPlacement\n  dailyRegionalPlacement\n  continent\n  characters {\n    id\n    character\n    gameCount\n    __typename\n  }\n  __typename\n}\n\nfragment userProfilePage on User {\n  fbUid\n  displayName\n  connectCode {\n    code\n    __typename\n  }\n  status\n  activeSubscription {\n    level\n    hasGiftSub\n    __typename\n  }\n  rankedNetplayProfile {\n    ...profileFields\n    __typename\n  }\n  netplayProfiles {\n    ...profileFields\n    season {\n      id\n      startedAt\n      endedAt\n      name\n      status\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nquery AccountManagementPageQuery($cc: String!, $uid: String!) {\n  getUser(fbUid: $uid) {\n    ...userProfilePage\n    __typename\n  }\n  getConnectCode(code: $cc) {\n    user {\n      ...userProfilePage\n      __typename\n    }\n    __typename\n  }\n}\n",
+				};
+				const response = await fetch(
+					"https://gql-gateway-dot-slippi.uc.r.appspot.com/graphql",
+					{
+						method: "POST",
+						body: JSON.stringify(body),
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+				const data = await response.json();
+				const user = data.data.getConnectCode.user;
+				const rankedProfile = user.rankedNetplayProfile;
+				const nessPercent =
+					(rankedProfile.characters.find(
+						(c) => c.character === "NESS"
+					)?.gameCount ?? 0) /
+					rankedProfile.characters.reduce(
+						(accum, curr) => accum + curr.gameCount,
+						0
+					);
+				const info = {
+					code,
+					displayName: user.displayName,
+					dailyGlobalPlacement: rankedProfile.dailyGlobalPlacement,
+					dailyRegionalPlacement:
+						rankedProfile.dailyRegionalPlacement,
+					elo: rankedProfile.ratingOrdinal,
+					losses: rankedProfile.losses,
+					wins: rankedProfile.wins,
+					totalSets: rankedProfile.ratingUpdateCount,
+					continent: rankedProfile.continent,
+					nessPercent:
+						nessPercent === nessPercent ? nessPercent : null,
+				};
+				return info;
+			};
+			const contentDiv = document.getElementById("content");
+			const slippiBadge = (ness, i) => {
+				return `
+					<a class="player-row ${i < 3 ? ["no1", "no2", "no3"][i] : ""}" href="https://slippi.gg/user/${ness.code.replace(
+						"#",
+						"-"
+					)}">
+						<div class="numrank-container">
+							<span class="numrank">${i === 0 ? crown : `#${i+1}`}</span>
+						</div>
+						<div class="rating-container">
+							<div class="rating-image"><img src="${rankImages[getRankBucket(ness)]}" alt="${
+					rankNames[getRankBucket(ness)]
+				}"></img></div>
+							<span class="elo">${ness.elo.toFixed(1)}</span>
+						</div>
+						<div class="name-container">
+							<div class="player-tag">
+								${ness.tag || ness.displayName}
+							</div>
+							<div class="slippi-player">
+								${ness.displayName} (${ness.code})
+								
+							</div>
+						</div>
+						<div class="right">
+							<div class="win-loss">
+								<span class="wins">${ness.wins ?? 0}</span> / <span class="losses">${
+									ness.losses ?? 0
+								}</span>
+							</div>
+							<span class="nessiness ${
+								ness.nessPercent === null
+									? "nessiness-null"
+									: ness.nessPercent < 0.5
+									? "nessiness-bad"
+									: ness.nessPercent < 0.8
+									? "nessiness-okay"
+									: ness.nessPercent < 1
+									? "nessiness-good"
+									: ""
+							}">
+								${ness.nessPercent === null ? "" : (ness.nessPercent * 100).toFixed(0) + "%"}
+								<img class="nessicon" src="https://slippi.gg/images/characters/stock-icon-11-0.png"></img>
+							</span>
+						</div>
+					</a>
+				`;
+			};
+			const skeleton = `
+				<div class="player-row">
+					<div class="numrank-container">
+						<span class="numrank"><span class="skeleton">##</span></span>
+					</div>
+					<div class="rating-container">
+						<div class="rating-image"><span class="skeleton" style="display: inline-block; width: 3.5em; height: 2.5em;"></span></div>
+						<span class="elo"><span class="skeleton">1234.5</span></span>
+					</div>
+					<div class="name-container">
+						<div class="player-tag">
+							<span class="skeleton">PlayerTag</span>
+						</div>
+						<div class="slippi-player">
+							<span class="skeleton">PlayerTag (CODE#123)</span>
+						</div>
+					</div>
+					<div class="spacer"></div>
+					<div class="right">
+						<div class="win-loss">
+							<span class="wins"><span class="skeleton">??</span></span> / <span class="losses"><span class="skeleton">??</span></span>
+						</div>
+						<span class="skeleton">100%</span>
+					</div>
+				</div>
+			`;
+			contentDiv.innerHTML = `
+				${nesses.map(() => skeleton).join("")}
+			`;
+			const populateContent = async () => {
+				nesses = await Promise.all(
+					nesses.map(async (ness) => {
+						const nessInfo = await getUserData(ness.code);
+						return { tag: ness.tag, ...nessInfo };
+					})
+				);
+				nesses.sort((a, b) => b.elo - a.elo);
+				console.log(nesses);
+				contentDiv.innerHTML = `
+					${nesses.map((ness, i) => slippiBadge(ness, i)).join("")}
+				`;
+			};
+			populateContent();
+			window.onload = () => {
+				console.log("hi");
+				const body = document.getElementsByTagName("body")[0];
+				const toRemove = [...body.children].filter(
+					(x) => x.id !== "main"
+				);
+				toRemove.forEach((x) => {
+					x.remove();
+				});
+			};
+		</script>
+	</body>
+</html>
