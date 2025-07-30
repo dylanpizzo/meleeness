@@ -1,0 +1,195 @@
+.a {
+	color: inherit;
+	text-decoration: none;
+}
+.link {
+	color: rgb(96, 112, 192);
+}
+.link:hover {
+	text-decoration: underline;
+}
+.skeleton {
+	color: transparent;
+	--pulse1: rgb(50, 60, 70);
+	--pulse2: rgb(65, 75, 85);
+	animation: pulse 2s infinite;
+	border-radius: 0.25em;
+	user-select: none;
+}
+.main {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5em;
+	padding: 2em;
+	background-color: rgb(10, 20, 30);
+	min-height: 100vh;
+	box-sizing: border-box;
+	color: white;
+	font-family: sans-serif;
+	padding-bottom: 40vh;
+	align-items: center;
+}
+.title {
+	font-size: 2em;
+	/* font-weight: bold; */
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25em;
+}
+#content {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+.player-row {
+	font-family: sans-serif;
+	display: flex;
+	align-items: center;
+	gap: 1.5em;
+	padding: 1em 1.5em;
+	border-radius: 1em;
+	box-sizing: border-box;
+	background-color: rgb(30, 40, 50);
+	transition: all 0.25s;
+	--rank-color: transparent;
+	box-shadow: inset 0 0 1em var(--rank-color);
+}
+.player-row:hover {
+	background-color: rgb(40, 50, 60);
+}
+.player-row.bronze {
+	background-color: rgb(80, 50, 40);
+	border: 1px solid rgb(192, 112, 96);
+}
+.player-row.bronze:hover {
+	background-color: rgb(95, 60, 50);
+}
+.player-row.silver {
+	background-color: rgb(70, 70, 90);
+	border: 1.5px solid rgb(128, 128, 150);
+}
+.player-row.silver:hover {
+	background-color: rgb(85, 85, 100);
+}
+.player-row.gold {
+	background-color: rgb(120, 100, 30);
+	border: 2px solid rgb(255, 192, 60);
+}
+.player-row.gold:hover {
+	background-color: rgb(140, 115, 20);
+}
+.player-row.no2 {
+	background-color: rgb(40, 50, 80);
+	border: 1.5px solid rgb(96, 112, 192);
+}
+.player-row.no2:hover {
+	background-color: rgb(50, 60, 95);
+}
+.player-row.no3 {
+	background-color: rgb(40, 50, 70);
+	border: 1px solid rgb(72, 96, 128);
+}
+.player-row.no3:hover {
+	background-color: rgb(50, 60, 80);
+}
+.player-row.no1 {
+	--magenta: 227;
+	background-color: hsl(var(--magenta), 50%, 33%);
+	border: 2px solid hsl(var(--magenta), 75%, 58%);
+}
+.player-row.no1:hover {
+	background-color: hsl(var(--magenta), 48%, 40%);
+}
+.numrank-container {
+	width: 3em;
+	text-align: center;
+	flex-shrink: 0;
+}
+.numrank {
+	font-size: 1.5em;
+}
+.rating-container {
+	width: 3.5em;
+	display: flex;
+	flex-direction: column;
+	gap: 0.375em;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+.rating-image img {
+	width: 100%;
+}
+.elo {
+	opacity: 0.8;
+}
+.name-container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25em;
+	flex-grow: 1;
+}
+.player-tag {
+	font-size: 1.5em;
+	display: flex;
+	gap: 0.5em;
+}
+.slippi-player {
+	opacity: 0.65;
+	display: flex;
+	gap: 0.5em;
+	align-items: center;
+}
+.spacer {
+	flex-grow: 1;
+}
+.right {
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	align-items: flex-end;
+}
+.win-loss {
+	font-family: "Rubik", sans-serif;
+	font-weight: bold;
+	font-size: 1.15em;
+}
+.wins {
+	color: rgb(46, 204, 64);
+}
+.losses {
+	color: rgb(255, 77, 0);
+}
+.nessicon {
+	width: 1em;
+	height: 1em;
+}
+.nessiness {
+	font-weight: normal;
+	font-size: 0.8em;
+	padding: 0.25em;
+	border-radius: 0.25em;
+	background-color: rgba(10, 70, 150, 0.5);
+	color: rgba(255, 255, 255, 0.75);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45em;
+}
+.nessiness-good {
+	background-color: rgba(10, 80, 10, 0.5);
+}
+.nessiness-okay {
+	background-color: rgba(120, 80, 10, 0.5);
+}
+.nessiness-null {
+	background-color: rgba(120, 120, 120, 0.5);
+}
+.nessiness-bad {
+	background-color: rgba(120, 10, 10, 0.5);
+}
+.crown {
+	height: 1.5em;
+}
