@@ -15,7 +15,7 @@ export default async function SlippiUser(props: {
 			style={
 				{
 					"--rank-color": rankInfo.color,
-				} as any
+				} as React.CSSProperties
 			}
 			href={`https://slippi.gg/user/${userData.code.replace("#", "-")}`}
 		>
