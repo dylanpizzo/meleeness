@@ -22,7 +22,7 @@ export default async function Home() {
 					</li>
 					<li>Save and see your changes instantly.</li>
 					<li>
-						<SlippiUser userCode="SALT#747" />
+						<SlippiUser userCode="SALT#747" userTag="Salt" />
 					</li>
 				</ol>
 

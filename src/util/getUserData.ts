@@ -1,18 +1,23 @@
 import { getRawSlippiData } from "./getRawSlippiData";
 
 export type UserData = {
+	tag: string;
 	code: string;
 	displayName: string;
-	dailyGlobalPlacement: number;
-	dailyRegionalPlacement: number;
+	dailyGlobalPlacement: number | null;
+	dailyRegionalPlacement: number | null;
 	elo: number;
+	wins: number;
 	losses: number;
 	totalSets: number;
 	continent: string;
 	nessPercent: number | null;
 };
 
-export const getUserData = async (code: string): Promise<unknown> => {
+export const getUserData = async (
+	code: string,
+	tag: string
+): Promise<UserData> => {
 	const data = await getRawSlippiData(code);
 	const user = data.getUser;
 	const rankedProfile = user.rankedNetplayProfile;
@@ -26,7 +31,8 @@ export const getUserData = async (code: string): Promise<unknown> => {
 				accum + curr.gameCount,
 			0
 		);
-	const info = {
+	return {
+		tag,
 		code,
 		displayName: user.displayName,
 		dailyGlobalPlacement: rankedProfile.dailyGlobalPlacement,
@@ -38,5 +44,4 @@ export const getUserData = async (code: string): Promise<unknown> => {
 		continent: rankedProfile.continent,
 		nessPercent: nessPercent === nessPercent ? nessPercent : null,
 	};
-	return info;
 };
