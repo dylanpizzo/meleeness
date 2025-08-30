@@ -2,8 +2,10 @@ const rankImages = {
 	none: "https://slippi.gg/static/media/rank_Unranked1.ac2623299b250689293cd4a5e68fcc5b.svg",
 	pending:
 		"https://slippi.gg/static/media/rank_Unranked3.0f639e8b73090a7ba4a50f7bcc272f57.svg",
-	bronze1: "",
-	bronze2: "",
+	bronze1:
+		"https://slippi.gg/static/media/rank_Bronze_I.90480ec5a08ee8d6048021f889933455.svg",
+	bronze2:
+		"https://slippi.gg/static/media/rank_Bronze_II.9d7a7994dbf087e3aea44f5b1c1409a7.svg",
 	bronze3:
 		"https://slippi.gg/static/media/rank_Bronze_III.b44c3a06f14234dec6f67e9b28088a6f.svg",
 	silver1:
