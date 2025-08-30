@@ -1,8 +1,8 @@
 import styles from "./page.module.css";
-import SlippiUser from "@/components/SlippiUser/SlippiUser";
 import { Metadata } from "next";
 import { getSavedSlippiData } from "@/util/getSavedSlippiData";
-import { formatUserData } from "@/util/formatUserData";
+import SlippiLeaderboard from "@/components/SlippiLeaderboard/SlippiLeaderboard";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
 	title: "Ness Leaderboard",
@@ -15,20 +15,8 @@ export const metadata: Metadata = {
 	},
 };
 
-// The contents depend on dynamic values
-// TODO: maybe fetch this data client side?
-export const dynamic = "force-dynamic";
-
 export default async function Leaderboard() {
-	const allData = (await getSavedSlippiData())
-		.map((rawData) => formatUserData(rawData))
-		.filter(
-			(data) =>
-				data.totalSets >= 5 &&
-				data.nessPercent &&
-				data.nessPercent >= 0.5
-		)
-		.sort((a, b) => b.elo - a.elo);
+	const initialRawData = await getSavedSlippiData();
 	return (
 		<div className={styles.page}>
 			<div className={styles.title}>
@@ -39,9 +27,7 @@ export default async function Leaderboard() {
 				Ness Leaderboard
 			</div>
 			<main className={styles.main}>
-				{allData.map((userData) => (
-					<SlippiUser key={userData.code} userData={userData} />
-				))}
+				<SlippiLeaderboard initialRawData={initialRawData} />
 			</main>
 			<div className={styles.footer}>
 				Join the{" "}

@@ -2,7 +2,7 @@ import { type UserData } from "@/util/formatUserData";
 import { getRank } from "@/util/SlippiStatic";
 import styles from "./SlippiUser.module.css";
 
-export default async function SlippiUser(props: { userData: UserData }) {
+export default function SlippiUser(props: { userData: UserData }) {
 	const { userData } = props;
 
 	// TODO: Have a more "permanent" name here.
