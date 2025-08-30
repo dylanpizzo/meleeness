@@ -1,12 +1,13 @@
-import { getUserData, type UserData } from "@/util/getUserData";
+import { type UserData } from "@/util/formatUserData";
 import { getRank } from "@/util/SlippiStatic";
 import styles from "./SlippiUser.module.css";
 
-export default async function SlippiUser(props: {
-	userCode: string;
-	userTag: string;
-}) {
-	const userData = await getUserData(props.userCode, props.userTag);
+export default async function SlippiUser(props: { userData: UserData }) {
+	const { userData } = props;
+
+	// TODO: Have a more "permanent" name here.
+	const tag = userData.displayName;
+
 	const top = (userData.dailyGlobalPlacement ?? 0) <= 300;
 	const rankInfo = getRank(userData.elo, top, userData.totalSets);
 	return (
@@ -29,7 +30,7 @@ export default async function SlippiUser(props: {
 				<span className={styles.elo}>{userData.elo.toFixed(1)}</span>
 			</div>
 			<div className={styles["name-container"]}>
-				<div className={styles["player-tag"]}>{userData.tag}</div>
+				<div className={styles["player-tag"]}>{tag}</div>
 				<div className={styles["slippi-player"]}>
 					{userData.displayName} ({userData.code})
 				</div>

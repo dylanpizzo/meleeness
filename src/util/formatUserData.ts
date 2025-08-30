@@ -1,7 +1,6 @@
-import { getRawSlippiData } from "./getRawSlippiData";
+import type { RawSlippiData } from "./getRawSlippiData";
 
 export type UserData = {
-	tag: string;
 	code: string;
 	displayName: string;
 	dailyGlobalPlacement: number | null;
@@ -14,11 +13,7 @@ export type UserData = {
 	nessPercent: number | null;
 };
 
-export const getUserData = async (
-	code: string,
-	tag: string
-): Promise<UserData> => {
-	const data = await getRawSlippiData(code);
+export const formatUserData = (data: RawSlippiData): UserData => {
 	const user = data.getUser;
 	const rankedProfile = user.rankedNetplayProfile;
 	const nessPercent =
@@ -32,8 +27,7 @@ export const getUserData = async (
 			0
 		);
 	return {
-		tag,
-		code,
+		code: user.connectCode.code,
 		displayName: user.displayName,
 		dailyGlobalPlacement: rankedProfile.dailyGlobalPlacement,
 		dailyRegionalPlacement: rankedProfile.dailyRegionalPlacement,

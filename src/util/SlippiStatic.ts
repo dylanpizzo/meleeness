@@ -55,9 +55,9 @@ export const ranks: {
 	{ key: "gold1", name: "Gold 1", color: "#F6A51E" },
 	{ key: "gold2", name: "Gold 2", color: "#F6A51E" },
 	{ key: "gold3", name: "Gold 3", color: "#F6A51E" },
-	{ key: "plat1", name: "Platinum 1", color: "#91E8E0" },
-	{ key: "plat2", name: "Platinum 2", color: "#91E8E0" },
-	{ key: "plat3", name: "Platinum 3", color: "#91E8E0" },
+	{ key: "platinum1", name: "Platinum 1", color: "#91E8E0" },
+	{ key: "platinum2", name: "Platinum 2", color: "#91E8E0" },
+	{ key: "platinum3", name: "Platinum 3", color: "#91E8E0" },
 	{
 		key: "diamond1",
 		name: "Diamond 1",
