@@ -1,5 +1,3 @@
-import Head from "next/head";
-import Image from "next/image";
 import styles from "./page.module.css";
 import SlippiUser from "@/components/SlippiUser/SlippiUser";
 import { Metadata } from "next";
