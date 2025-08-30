@@ -15,6 +15,12 @@ export const dynamic = "force-dynamic";
 export default async function Leaderboard() {
 	const allData = (await getSavedSlippiData())
 		.map((rawData) => formatUserData(rawData))
+		.filter(
+			(data) =>
+				data.totalSets >= 5 &&
+				data.nessPercent &&
+				data.nessPercent >= 0.5
+		)
 		.sort((a, b) => b.elo - a.elo);
 	return (
 		<div className={styles.page}>
