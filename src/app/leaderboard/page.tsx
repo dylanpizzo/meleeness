@@ -10,6 +10,10 @@ export const metadata: Metadata = {
 	title: "Ness Leaderboard",
 };
 
+// The contents depend on dynamic values
+// TODO: maybe fetch this data client side?
+export const dynamic = "force-dynamic";
+
 export default async function Leaderboard() {
 	const allData = (await getSavedSlippiData())
 		.map((rawData) => formatUserData(rawData))
