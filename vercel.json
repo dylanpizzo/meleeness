@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "crons": [
 	{
-      "path": "/api/slippi/user-data",
+      "path": "/api/slippi/take-snapshot",
       "schedule": "0 * * * *"
     }
   ]
