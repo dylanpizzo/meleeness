@@ -8,11 +8,13 @@ export const getSavedSlippiData = async (): Promise<RawSlippiData[]> => {
 	if (!data) {
 		return [];
 	} else {
-		return Object.values(_.groupBy(data, "slippi_user")).map(
-			(userData) =>
-				userData.toSorted(
-					(a, b) => Date.parse(b.time) - Date.parse(a.time)
-				)[0].slippi_data
-		);
+		return Object.values(_.groupBy(data, "slippi_user"))
+			.map(
+				(userData) =>
+					userData.toSorted(
+						(a, b) => Date.parse(b.time) - Date.parse(a.time)
+					)[0].slippi_data
+			)
+			.filter((d) => d.getUser !== null);
 	}
 };
