@@ -1,6 +1,9 @@
 import { getRawSlippiData } from "@/util/getRawSlippiData";
 import { createMasterClient } from "@/util/supabase/master";
 
+// The contents depend on dynamic values
+export const dynamic = "force-dynamic";
+
 export async function GET() {
 	const supabase = await createMasterClient();
 	const { data: userRows } = await supabase.from("slippi_users").select();
