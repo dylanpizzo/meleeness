@@ -4,7 +4,11 @@ import * as _ from "lodash";
 
 export const getSavedSlippiData = async (): Promise<RawSlippiData[]> => {
 	const supabase = await createMasterClient();
-	const { data } = await supabase.from("slippi_user_data").select();
+	const twoHoursAgo = new Date(Date.now() - 1000 * 60 * 60 * 2);
+	const { data } = await supabase
+		.from("slippi_user_data")
+		.select()
+		.gt("time", twoHoursAgo.toISOString());
 	if (!data) {
 		return [];
 	} else {
